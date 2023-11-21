@@ -1,0 +1,19 @@
+Loops 19, I would need to know the difference between while loops and for loops to know which one would be the better option to use in
+   Any given scenario while coding the project. A while loop continues the loop until the statement is false and a for loop loops a given number
+   of times that is decided when the loop starts.
+Functions 22, Parameters are items that need to be given when declaring a function while arguments are items that have been given inside the
+   Function. I would be using the parameters and arguments when making the functions for the blocks.
+Classes / Objects 25, A class is a group of similar objects and an object is more specific. For example a class would be candy and a object would
+   Be a chocolate bar. I would need to know the difference when making the project to make sure I use the correct terms when building the 
+   Blocks class and building the individual key block objects within it.
+Classes / Objects 26, It is a function that creates a instance of a object within a class. This will be useful when spawning blocks in game.
+Classes / Objects 27, Each class having its own tab is good for organization and making sure your code is readable and clean. This will be 
+   Helpful for larger projects like this one, in which being organized will make every further action easier to do.
+Lists 31, the difference between an a array and an array list is an array can have non object data types stored in it and an array list can only 
+   Have object data types stored in it. In my project I will be using both an array and an array List to store different blocks and store distance.
+Lists 32, using a list backwards can be useful depending on how you ordered the list. If for example I wanted to order the list from furthest 
+   Away from the player to closest to the player I would want to start at the bottom of the list to get the data I need the quickest.
+Vectors 37 and 38, You should use a PVector instead of float variables when you want to represent 2 variables in a single keyword. For example 
+   I would be using this for my x, y variables instead of using two float variables. 
+Vectors 42, a normalized vector is a vector that has been shrunken into a value between 0 and 1, and this is useful for scaling other variables
+   in relation to one.
