@@ -5,6 +5,8 @@ class Block {
   
   int blockColor;
   
+  float distanceToPlayer;
+  
   Block(float x, float y, float speed){
     position = new PVector(x, y);
     velocity = new PVector(-speed, 0);
@@ -18,6 +20,8 @@ class Block {
   void update(){
     velocity.add(acceleration);
     position.add(velocity);
+    
+    distanceToPlayer = position.x;
   }
   
   void display(){
