@@ -58,10 +58,20 @@ int spawnRateCur = 20;
 //frames until you can act again
 int stunFrames = 0;
 
+// the position of the last block hit
+PVector lastHitBlockPos;
+
+//the amount of blocks hit in a row without pressing the wrong button
+int combo = 0;
+
 void setup(){
+  prepareExitHandler();
+  
   size(800, 400);
-  noStroke(); //turn off stroke
+  noStroke(); //turn off outline
   rectMode(CENTER); //use centre mode for drawing rectangles
+  
+  lastHitBlockPos = new PVector(0,0);
   
   blocks = new ArrayList<Block>();
   
@@ -119,7 +129,7 @@ void draw() {
     
     textSize(32);
     fill(1, 97, 255);
-    text(str(highscore), 50, 120); 
+    text(str(int(highscore)), 50, 120); 
   }
 
 //---------------------------------------------------------------------------|
@@ -137,7 +147,7 @@ void draw() {
     
     target.display();
     
-    printScore(score, highscore);
+    printScore(score, highscore, combo);
     
     if (score > highscore){
       highscore = score;
@@ -161,6 +171,16 @@ void draw() {
       spawnRateCur = spawnRateMax;
       spawnBlock();
     }
+    
+    if (animTimer > 0){
+      stroke(int(random(100,200)),0,int(random(100,200)));
+      strokeWeight(random(0,10));
+      line(40, 200, lastHitBlockPos.x, lastHitBlockPos.y);
+      noStroke();
+      fill(int(random(100,200)),0,int(random(100,200)));
+      ellipse(lastHitBlockPos.x, lastHitBlockPos.y, 25*animTimer, 25*animTimer);
+    }
+    
   }
 
 //---------------------------------------------------------------------------|
@@ -176,7 +196,7 @@ void draw() {
     
     textSize(32);
     fill(1, 97, 255);
-    text(str(highscore), 50, 120); 
+    text(str(int(highscore)), 50, 120); 
     
     textSize(64);
     fill(20);
@@ -187,20 +207,25 @@ void draw() {
     }
   }
   
-  for (int i = blocks.size() - 1; i >= 0; i -= 1){
-      blocks.get(i).update();
-      blocks.get(i).display();
-      if(blocks.get(i).position.x <= 0){
-        for (int j = blocks.size() - 1; j >= 0; j -= 1){
-          blocks.remove(j);
+  try {
+    for (int i = blocks.size() - 1; i >= 0; i -= 1){
+        blocks.get(i).update();
+        blocks.get(i).display();
+        if(blocks.get(i).position.x <= 0){
+          for (int j = blocks.size() - 1; j >= 0; j -= 1){
+            if (blocks.size() > 0){
+              blocks.remove(j);
+            }
+          }
+          screen = "end";
         }
-        screen = "end";
-      }
-      if (blocks.size() > 0){
-        append(blockDist, dist(0, 200, blocks.get(i).position.x, blocks.get(i).position.y));
-      }
-      
+        if (blocks.size() > 0){
+          append(blockDist, dist(0, 200, blocks.get(i).position.x, blocks.get(i).position.y));
+        }
     }
+  } catch (IndexOutOfBoundsException e){
+    print("that was a close one");
+  }
   
   
   score = round(score);
@@ -235,14 +260,20 @@ void draw() {
   
 }
 
-void printScore(float s, float hs){
+void printScore(float s, float hs, int c){
+  s = round(s);
+  hs = round(hs);
   textSize(64);
   fill(100);
-  text(str(s), 40, 120); 
+  text(str(int(s)), 40, 120); 
   
   textSize(64);
   fill(100, 50, 20);
-  text(str(hs), 400, 120); 
+  text(str(int(hs)), 400, 120); 
+  
+  textSize(64);
+  fill(100, 100, 20);
+  text("X"+str(int(c)), 200, 120); 
 }
 
 boolean cast(String action){
@@ -252,18 +283,25 @@ boolean cast(String action){
   if (action == "a"){
     activeFrame = wA;
     if (closestBlockType == 1){
+      lastHitBlockPos = blocks.get(closestBlockIndex).position;
       blocks.remove(closestBlockIndex);
-      score += speed;
+      combo += 1;
+      score += speed + combo/2;
       blockHit = true;
     }
   }
   if (action == "d"){
     activeFrame = wD;
     if (closestBlockType == 0){
+      lastHitBlockPos = blocks.get(closestBlockIndex).position;
       blocks.remove(closestBlockIndex);
-      score += speed;
+      combo += 1;
+      score += speed + combo/2;
       blockHit = true;
     }
+  }
+  if (blocks.size() < 1){
+    blockHit = true;
   }
   return(blockHit);
 }
@@ -273,11 +311,12 @@ void spawnBlock(){
 }
 
 void keyPressed() {
-  
+  //Cast A and D for destroying blocks
   if (key == 'a'||key == 'A'){
     if (stunFrames < 1){
       if (!cast("a")){
         stunFrames = 40;
+        combo = 0;
       }
       animTimer = 5;
     }
@@ -288,11 +327,12 @@ void keyPressed() {
     if (stunFrames < 1){
       if (!cast("d")){
         stunFrames = 40;
+        combo = 0;
       }
       animTimer = 5;
     }
   }
-  
+  //close game on P press
   if (key == 'p'||key == 'P'){
     highscoreFile.println(highscore);
     highscoreFile.flush();
@@ -300,24 +340,56 @@ void keyPressed() {
     exit();
   }
   
+  //reset score and highscore on O press
   if (key == 'o'||key == 'O'){
     score = 0;
     highscore = 0;
   }
   
+  //spawn a block on Q press
   if (key == 'q'||key == 'Q'){
     spawnBlock();
   }
   
+  // on I press switch to the next screen
   if (key == 'i'||key == 'I'){
     if (screen == "start"){
       screen = "play";
     }
     else if (screen == "play"){
       screen = "end";
+      try {
+        for (int i = blocks.size() - 1; i >= 0; i -= 1){
+          blocks.remove(i);
+        }
+      } catch (IndexOutOfBoundsException e){
+        print("that was a close one");
+      }
     }
     else if (screen == "end"){
       screen = "start";
     }
   }
+}
+
+//saves highscore to text file before game closes by any means
+private void prepareExitHandler () {
+
+Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+public void run () {
+
+System.out.println("SHUTDOWN HOOK");
+  
+  print("saving highscore...");
+  highscoreFile.println(highscore);
+  highscoreFile.flush();
+  highscoreFile.close();
+  println("complete");
+  exit();
+
+}
+
+}));
+
 }
