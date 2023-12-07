@@ -209,6 +209,9 @@ void draw() {
   
   try {
     for (int i = blocks.size() - 1; i >= 0; i -= 1){
+        if (blocks.size() < 1){
+          break;
+        }
         blocks.get(i).update();
         blocks.get(i).display();
         if(blocks.get(i).position.x <= 0){

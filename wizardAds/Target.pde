@@ -8,6 +8,8 @@ class Target{
     
     position = new PVector(x, y);
     
+    position = PVector.random2D();
+    
     target = loadImage("Target.png");
     
   }
