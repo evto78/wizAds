@@ -64,6 +64,12 @@ PVector lastHitBlockPos;
 //the amount of blocks hit in a row without pressing the wrong button
 int combo = 0;
 
+//the last type of block broken
+String prevBlock;
+
+//transition frames left
+int tFleft = 0;
+
 void setup(){
   prepareExitHandler();
   
@@ -100,16 +106,17 @@ void setup(){
   title = loadImage("titleText.png");
   endText = loadImage("endText.png");
   
-  tFrame1 = loadImage("transitionFrame1.png");
-  tFrame2 = loadImage("transitionFrame2.png");
-  tFrame3 = loadImage("transitionFrame3.png");
-  tFrame4 = loadImage("transitionFrame4.png");
-  tFrame5 = loadImage("transitionFrame5.png");
+  tFrame1 = loadImage("tF1.png");
+  tFrame2 = loadImage("tF2.png");
+  tFrame3 = loadImage("tF3.png");
+  tFrame4 = loadImage("tF4.png");
+  tFrame5 = loadImage("tF5.png");
   
   screen = "start";
 }
 
 void draw() {
+  
   if (animTimer > 0){
     animTimer -= 1;
   }
@@ -130,6 +137,52 @@ void draw() {
     textSize(32);
     fill(1, 97, 255);
     text(str(int(highscore)), 50, 120); 
+    
+    if (tFleft > 0){
+      switch (tFleft){
+        case 20:
+          image(tFrame1, 0, 0);
+        case 19:
+          image(tFrame1, 0, 0);
+        case 18:
+          image(tFrame2, 0, 0);
+        case 17:
+          image(tFrame2, 0, 0);
+        case 16:
+          image(tFrame3, 0, 0);
+        case 15:
+          image(tFrame3, 0, 0);
+        case 14:
+          image(tFrame4, 0, 0);
+        case 13:
+          image(tFrame4, 0, 0);
+        case 12:
+          image(tFrame5, 0, 0);
+        case 11:
+          image(tFrame5, 0, 0);
+        case 10:
+          image(tFrame5, 0, 0);
+        case 9:
+          image(tFrame5, 0, 0);
+        case 8:
+          image(tFrame4, 0, 0);
+        case 7:
+          image(tFrame4, 0, 0);
+        case 6:
+          image(tFrame3, 0, 0);
+        case 5:
+          image(tFrame3, 0, 0);
+        case 4:
+          image(tFrame2, 0, 0);
+        case 3:
+          image(tFrame2, 0, 0);
+        case 2:
+          image(tFrame1, 0, 0);
+        case 1:
+          image(tFrame1, 0, 0);
+      }
+      tFleft -= 1;
+    }
   }
 
 //---------------------------------------------------------------------------|
@@ -173,12 +226,69 @@ void draw() {
     }
     
     if (animTimer > 0){
-      stroke(int(random(100,200)),0,int(random(100,200)));
-      strokeWeight(random(0,10));
-      line(40, 200, lastHitBlockPos.x, lastHitBlockPos.y);
-      noStroke();
-      fill(int(random(100,200)),0,int(random(100,200)));
-      ellipse(lastHitBlockPos.x, lastHitBlockPos.y, 25*animTimer, 25*animTimer);
+      if (prevBlock == "A"){
+        stroke(int(random(130,200)),0,int(random(25,100)));
+        strokeWeight(random(0,10));
+        line(40, 200, lastHitBlockPos.x, lastHitBlockPos.y);
+        noStroke();
+        fill(int(random(130,200)),0,int(random(25,100)));
+        ellipse(lastHitBlockPos.x, lastHitBlockPos.y, 25*animTimer, 25*animTimer);
+      }
+      if (prevBlock == "D"){
+        stroke(int(random(25,100)),0,int(random(130,200)));
+        strokeWeight(random(0,10));
+        line(40, 200, lastHitBlockPos.x, lastHitBlockPos.y);
+        noStroke();
+        fill(int(random(25,100)),0,int(random(130,200)));
+        ellipse(lastHitBlockPos.x, lastHitBlockPos.y, 25*animTimer, 25*animTimer);
+      }
+      
+    }
+    
+    if (tFleft > 0){
+      switch (tFleft){
+        case 20:
+          image(tFrame1, 0, 0);
+        case 19:
+          image(tFrame1, 0, 0);
+        case 18:
+          image(tFrame2, 0, 0);
+        case 17:
+          image(tFrame2, 0, 0);
+        case 16:
+          image(tFrame3, 0, 0);
+        case 15:
+          image(tFrame3, 0, 0);
+        case 14:
+          image(tFrame4, 0, 0);
+        case 13:
+          image(tFrame4, 0, 0);
+        case 12:
+          image(tFrame5, 0, 0);
+        case 11:
+          image(tFrame5, 0, 0);
+        case 10:
+          image(tFrame5, 0, 0);
+        case 9:
+          image(tFrame5, 0, 0);
+        case 8:
+          image(tFrame4, 0, 0);
+        case 7:
+          image(tFrame4, 0, 0);
+        case 6:
+          image(tFrame3, 0, 0);
+        case 5:
+          image(tFrame3, 0, 0);
+        case 4:
+          image(tFrame2, 0, 0);
+        case 3:
+          image(tFrame2, 0, 0);
+        case 2:
+          image(tFrame1, 0, 0);
+        case 1:
+          image(tFrame1, 0, 0);
+      }
+      tFleft -= 1;
     }
     
   }
@@ -201,6 +311,52 @@ void draw() {
     textSize(64);
     fill(20);
     text(str(score), 360, 120); 
+    
+    if (tFleft > 0){
+      switch (tFleft){
+        case 20:
+          image(tFrame1, 0, 0);
+        case 19:
+          image(tFrame1, 0, 0);
+        case 18:
+          image(tFrame2, 0, 0);
+        case 17:
+          image(tFrame2, 0, 0);
+        case 16:
+          image(tFrame3, 0, 0);
+        case 15:
+          image(tFrame3, 0, 0);
+        case 14:
+          image(tFrame4, 0, 0);
+        case 13:
+          image(tFrame4, 0, 0);
+        case 12:
+          image(tFrame5, 0, 0);
+        case 11:
+          image(tFrame5, 0, 0);
+        case 10:
+          image(tFrame5, 0, 0);
+        case 9:
+          image(tFrame5, 0, 0);
+        case 8:
+          image(tFrame4, 0, 0);
+        case 7:
+          image(tFrame4, 0, 0);
+        case 6:
+          image(tFrame3, 0, 0);
+        case 5:
+          image(tFrame3, 0, 0);
+        case 4:
+          image(tFrame2, 0, 0);
+        case 3:
+          image(tFrame2, 0, 0);
+        case 2:
+          image(tFrame1, 0, 0);
+        case 1:
+          image(tFrame1, 0, 0);
+      }
+      tFleft -= 1;
+    }
     
     if (score > highscore){
       highscore = score;
@@ -260,6 +416,8 @@ void draw() {
   else{
   
   }
+  
+  
   
 }
 
@@ -322,6 +480,7 @@ void keyPressed() {
         combo = 0;
       }
       animTimer = 5;
+      prevBlock = "A";
     }
     
   }
@@ -333,6 +492,7 @@ void keyPressed() {
         combo = 0;
       }
       animTimer = 5;
+      prevBlock = "D";
     }
   }
   //close game on P press
@@ -356,6 +516,7 @@ void keyPressed() {
   
   // on I press switch to the next screen
   if (key == 'i'||key == 'I'){
+    tFleft = 20;
     if (screen == "start"){
       screen = "play";
     }
